@@ -9,7 +9,7 @@
         <div>
             <span class="hero-badge">✦ AI Career Analysis</span>
 
-            <h2>Welcome Back👋</h2>
+            <h2>Welcome Back 👋</h2>
 
             <p>
                 Analyze your resume, discover skill gaps,
@@ -19,7 +19,7 @@
     </section>
 
 
-    <!-- Resume Analyzer -->
+    <!-- Analyzer -->
     <section class="analyzer-card">
 
         <div class="section-heading">
@@ -40,9 +40,7 @@
         </div>
 
 
-        <form method="post"
-              enctype="multipart/form-data"
-              id="resumeForm">
+        <form method="post" enctype="multipart/form-data" id="resumeForm">
 
             <!-- Target role -->
             <div class="form-group">
@@ -159,7 +157,7 @@
             </div>
 
 
-            <!-- Button -->
+            <!-- Analyze -->
             <button
                 type="submit"
                 class="analyze-btn"
@@ -198,13 +196,14 @@
                 </h3>
 
                 <p>
-                    Here’s what Gemini found from your resume.
+                    Here's what Gemini found from your resume.
                 </p>
             </div>
 
         </div>
 
 
+        <!-- Error -->
         {% if result.error %}
 
         <div class="error-card">
@@ -221,81 +220,239 @@
 
         </div>
 
+
         {% else %}
 
 
-        <!-- TOP RESULT CARDS -->
+        <!-- Summary -->
         <div class="results-grid">
 
-
-            <!-- Skills -->
             <div class="result-card">
 
                 <div class="result-card-header">
 
                     <div class="result-icon skills-icon">
-                        🧠
+                        🎯
                     </div>
 
                     <div>
-                        <h4>Your Skills</h4>
-                        <p>Skills found in your resume</p>
+                        <h4>Career Summary</h4>
+
+                        <p>
+                            Personalized assessment
+                        </p>
                     </div>
 
                 </div>
 
+                <div class="career-summary">
 
-                <div class="skill-tags">
-
-                    {% for s in result.get("skills", []) %}
-
-                    <span class="skill-tag">
-                        {{ s }}
-                    </span>
-
-                    {% endfor %}
+                    <p>
+                        {{ result.get(
+                            "career_summary",
+                            "No summary available."
+                        ) }}
+                    </p>
 
                 </div>
 
             </div>
 
 
-            <!-- Missing Skills -->
             <div class="result-card">
 
                 <div class="result-card-header">
 
                     <div class="result-icon missing-icon">
-                        🎯
+                        📊
                     </div>
 
                     <div>
-                        <h4>Missing Skills</h4>
-                        <p>Skills to improve for your goal</p>
+                        <h4>Job Readiness</h4>
+
+                        <p>
+                            Estimated readiness for your target role
+                        </p>
                     </div>
 
                 </div>
 
 
-                <ul class="clean-result-list">
+                <div class="readiness-score">
 
-                    {% for s in result.get("missing_skills", []) %}
+                    <div class="score-number">
 
-                    <li>
-                        <span class="list-dot missing-dot"></span>
-                        {{ s }}
-                    </li>
+                        {{ result.get(
+                            "job_readiness_score",
+                            0
+                        ) }}
 
-                    {% endfor %}
+                        <span>/ 100</span>
 
-                </ul>
+                    </div>
+
+                    <div class="score-bar">
+
+                        <div
+                            class="score-progress"
+                            id="scoreProgress"
+                            data-score="{{ result.get('job_readiness_score', 0) }}"
+                        ></div>
+
+                    </div>
+
+                    <p class="score-reason">
+
+                        {{ result.get(
+                            "job_readiness_reason",
+                            "No explanation available."
+                        ) }}
+
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
 
-        <!-- ROADMAP -->
+        <!-- Skills -->
+        <div class="result-card">
+
+            <div class="result-card-header">
+
+                <div class="result-icon skills-icon">
+                    🧠
+                </div>
+
+                <div>
+                    <h4>Your Skills</h4>
+
+                    <p>
+                        Relevant skills identified from your resume
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="skills-analysis">
+
+                {% for skill in result.get("skills", []) %}
+
+                <div class="skill-analysis-item">
+
+                    <div class="skill-analysis-top">
+
+                        <strong>
+                            {{ skill.get(
+                                "name",
+                                "Unknown Skill"
+                            ) }}
+                        </strong>
+
+                        <span class="skill-level">
+                            {{ skill.get(
+                                "level",
+                                "Unknown"
+                            ) }}
+                        </span>
+
+                    </div>
+
+                    <p>
+                        {{ skill.get(
+                            "evidence",
+                            "No evidence provided."
+                        ) }}
+                    </p>
+
+                </div>
+
+                {% else %}
+
+                <p>
+                    No relevant skills were identified.
+                </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Missing skills -->
+        <div class="result-card">
+
+            <div class="result-card-header">
+
+                <div class="result-icon missing-icon">
+                    🎯
+                </div>
+
+                <div>
+                    <h4>Missing Skills</h4>
+
+                    <p>
+                        Skills that could improve your readiness
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="missing-skills-list">
+
+                {% for skill in result.get(
+                    "missing_skills",
+                    []
+                ) %}
+
+                <div class="missing-skill-item">
+
+                    <div class="missing-skill-header">
+
+                        <strong>
+                            {{ skill.get(
+                                "name",
+                                "Unknown Skill"
+                            ) }}
+                        </strong>
+
+                        <span class="skill-priority">
+                            {{ skill.get(
+                                "priority",
+                                "Medium"
+                            ) }}
+                        </span>
+
+                    </div>
+
+                    <p>
+                        {{ skill.get(
+                            "reason",
+                            "No reason provided."
+                        ) }}
+                    </p>
+
+                </div>
+
+                {% else %}
+
+                <p>
+                    No major missing skills were identified.
+                </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Roadmap -->
         <div class="result-card roadmap-card">
 
             <div class="result-card-header">
@@ -306,8 +463,9 @@
 
                 <div>
                     <h4>Career Roadmap</h4>
+
                     <p>
-                        Recommended steps to reach your target role
+                        Personalized steps to reach your target role
                     </p>
                 </div>
 
@@ -316,21 +474,58 @@
 
             <div class="roadmap-items">
 
-                {% for s in result.get("roadmap", []) %}
+                {% for item in result.get(
+                    "roadmap",
+                    []
+                ) %}
 
                 <div class="roadmap-item">
 
                     <div class="roadmap-number">
-                        {{ loop.index }}
+                        {{ item.get(
+                            "step",
+                            loop.index
+                        ) }}
                     </div>
 
                     <div class="roadmap-line"></div>
 
                     <div class="roadmap-content">
-                        {{ s }}
+
+                        <h4>
+                            {{ item.get(
+                                "topic",
+                                "Roadmap Step"
+                            ) }}
+                        </h4>
+
+                        <p>
+                            <strong>Why:</strong>
+
+                            {{ item.get(
+                                "reason",
+                                "No reason provided."
+                            ) }}
+                        </p>
+
+                        <p>
+                            <strong>Practice:</strong>
+
+                            {{ item.get(
+                                "practice",
+                                "No practice recommendation provided."
+                            ) }}
+                        </p>
+
                     </div>
 
                 </div>
+
+                {% else %}
+
+                <p>
+                    No roadmap was generated.
+                </p>
 
                 {% endfor %}
 
@@ -339,7 +534,96 @@
         </div>
 
 
-        <!-- INTERVIEW QUESTIONS -->
+        <!-- Projects -->
+        <div class="result-card">
+
+            <div class="result-card-header">
+
+                <div class="result-icon roadmap-icon">
+                    🚀
+                </div>
+
+                <div>
+                    <h4>Recommended Projects</h4>
+
+                    <p>
+                        Projects designed to close your skill gaps
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="project-recommendations">
+
+                {% for project in result.get(
+                    "recommended_projects",
+                    []
+                ) %}
+
+                <div class="project-item">
+
+                    <h4>
+                        {{ project.get(
+                            "name",
+                            "Recommended Project"
+                        ) }}
+                    </h4>
+
+                    <p>
+                        <strong>Purpose:</strong>
+
+                        {{ project.get(
+                            "purpose",
+                            "No purpose provided."
+                        ) }}
+                    </p>
+
+                    <p>
+                        <strong>What to build:</strong>
+
+                        {{ project.get(
+                            "description",
+                            "No description provided."
+                        ) }}
+                    </p>
+
+
+                    {% if project.get("skills") %}
+
+                    <div class="skill-tags">
+
+                        {% for skill in project.get(
+                            "skills",
+                            []
+                        ) %}
+
+                        <span class="skill-tag">
+                            {{ skill }}
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                {% else %}
+
+                <p>
+                    No project recommendations were generated.
+                </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Interview -->
         <div class="result-card interview-card">
 
             <div class="result-card-header">
@@ -350,6 +634,7 @@
 
                 <div>
                     <h4>Interview Questions</h4>
+
                     <p>
                         Questions you should prepare for
                     </p>
@@ -360,7 +645,10 @@
 
             <div class="interview-items">
 
-                {% for s in result.get("interview_questions", []) %}
+                {% for item in result.get(
+                    "interview_questions",
+                    []
+                ) %}
 
                 <div class="interview-item">
 
@@ -368,15 +656,94 @@
                         {{ loop.index }}
                     </span>
 
-                    <span class="question-text">
-                        {{ s }}
-                    </span>
+                    <div class="question-content">
+
+                        <span class="question-text">
+                            {{ item.get(
+                                "question",
+                                "Question unavailable."
+                            ) }}
+                        </span>
+
+                        <div class="question-meta">
+
+                            <span>
+                                {{ item.get(
+                                    "category",
+                                    "Technical"
+                                ) }}
+                            </span>
+
+                            <span>
+                                {{ item.get(
+                                    "difficulty",
+                                    "Intermediate"
+                                ) }}
+                            </span>
+
+                        </div>
+
+                    </div>
 
                 </div>
+
+                {% else %}
+
+                <p>
+                    No interview questions were generated.
+                </p>
 
                 {% endfor %}
 
             </div>
+
+        </div>
+
+
+        <!-- Resume improvements -->
+        <div class="result-card">
+
+            <div class="result-card-header">
+
+                <div class="result-icon skills-icon">
+                    📝
+                </div>
+
+                <div>
+                    <h4>Resume Improvements</h4>
+
+                    <p>
+                        Suggestions to make your resume stronger
+                    </p>
+                </div>
+
+            </div>
+
+
+            <ul class="clean-result-list">
+
+                {% for improvement in result.get(
+                    "resume_improvements",
+                    []
+                ) %}
+
+                <li>
+
+                    <span class="list-dot missing-dot"></span>
+
+                    {{ improvement }}
+
+                </li>
+
+                {% else %}
+
+                <li>
+                    No specific improvements were identified.
+                </li>
+
+                {% endfor %}
+
+            </ul>
 
         </div>
 
@@ -392,17 +759,33 @@
 
 <script>
 
-    const fileInput = document.getElementById("file");
-    const fileName = document.getElementById("fileName");
-    const dropzone = document.getElementById("dropzone");
+    // File handling
+    const fileInput =
+        document.getElementById("file");
 
-    const resumeForm = document.getElementById("resumeForm");
-    const analyzeBtn = document.getElementById("analyzeBtn");
+    const fileName =
+        document.getElementById("fileName");
 
-    const roleInput = document.getElementById("role");
-    const resumeInput = document.getElementById("resume");
+    const dropzone =
+        document.getElementById("dropzone");
 
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+    // Form elements
+    const resumeForm =
+        document.getElementById("resumeForm");
+
+    const analyzeBtn =
+        document.getElementById("analyzeBtn");
+
+    const roleInput =
+        document.getElementById("role");
+
+    const resumeInput =
+        document.getElementById("resume");
+
+
+    const MAX_FILE_SIZE =
+        5 * 1024 * 1024;
 
     const ALLOWED_EXTENSIONS = [
         ".pdf",
@@ -416,24 +799,34 @@
             return "Please select a resume file.";
         }
 
-        const fileName = file.name.toLowerCase();
+
+        const fileNameLower =
+            file.name.toLowerCase();
 
         const extension =
-            fileName.substring(
-                fileName.lastIndexOf(".")
+            fileNameLower.substring(
+                fileNameLower.lastIndexOf(".")
             );
 
-        if (!ALLOWED_EXTENSIONS.includes(extension)) {
+
+        if (
+            !ALLOWED_EXTENSIONS.includes(
+                extension
+            )
+        ) {
             return "Unsupported file type. Please upload a PDF or DOCX file.";
         }
+
 
         if (file.size === 0) {
             return "The selected file is empty. Please choose another file.";
         }
 
+
         if (file.size > MAX_FILE_SIZE) {
             return "File is too large. Please upload a file smaller than 5 MB.";
         }
+
 
         return null;
     }
@@ -442,9 +835,13 @@
     function showFileName(file) {
 
         if (!file) {
-            fileName.textContent = "No file selected";
+
+            fileName.textContent =
+                "No file selected";
+
             return;
         }
+
 
         fileName.textContent =
             "Selected: " + file.name;
@@ -453,7 +850,9 @@
 
     function handleFile(file) {
 
-        const error = validateFile(file);
+        const error =
+            validateFile(file);
+
 
         if (error) {
 
@@ -462,12 +861,17 @@
             fileName.textContent =
                 error;
 
-            fileName.classList.add("file-error");
+            fileName.classList.add(
+                "file-error"
+            );
 
             return false;
         }
 
-        fileName.classList.remove("file-error");
+
+        fileName.classList.remove(
+            "file-error"
+        );
 
         showFileName(file);
 
@@ -477,21 +881,26 @@
 
     if (fileInput && dropzone) {
 
-        fileInput.addEventListener("change", function () {
+        fileInput.addEventListener(
+            "change",
+            function () {
 
-            if (fileInput.files.length > 0) {
+                if (
+                    fileInput.files.length > 0
+                ) {
 
-                handleFile(
-                    fileInput.files[0]
-                );
+                    handleFile(
+                        fileInput.files[0]
+                    );
 
-            } else {
+                } else {
 
-                showFileName(null);
+                    showFileName(null);
+
+                }
 
             }
-
-        });
+        );
 
 
         dropzone.addEventListener(
@@ -503,7 +912,6 @@
                 dropzone.classList.add(
                     "drag-over"
                 );
-
             }
         );
 
@@ -515,7 +923,6 @@
                 dropzone.classList.remove(
                     "drag-over"
                 );
-
             }
         );
 
@@ -530,33 +937,36 @@
                     "drag-over"
                 );
 
+
                 const files =
                     event.dataTransfer.files;
 
+
                 if (files.length > 0) {
 
-                    const file = files[0];
+                    const file =
+                        files[0];
+
 
                     if (handleFile(file)) {
 
                         const dataTransfer =
                             new DataTransfer();
 
-                        dataTransfer.items.add(file);
+                        dataTransfer.items.add(
+                            file
+                        );
 
                         fileInput.files =
                             dataTransfer.files;
-
                     }
-
                 }
-
             }
         );
-
     }
 
 
+    // Role suggestions
     if (roleInput) {
 
         const roleChips =
@@ -564,26 +974,30 @@
                 ".role-chip"
             );
 
-        roleChips.forEach(function (chip) {
 
-            chip.addEventListener(
-                "click",
-                function () {
+        roleChips.forEach(
+            function (chip) {
 
-                    roleInput.value =
-                        chip.textContent.trim();
+                chip.addEventListener(
+                    "click",
+                    function () {
 
-                    roleInput.focus();
+                        roleInput.value =
+                            chip.textContent.trim();
 
-                }
-            );
-
-        });
-
+                        roleInput.focus();
+                    }
+                );
+            }
+        );
     }
 
 
-    if (resumeForm && analyzeBtn) {
+    // Form submission
+    if (
+        resumeForm &&
+        analyzeBtn
+    ) {
 
         resumeForm.addEventListener(
             "submit",
@@ -612,11 +1026,13 @@
                     roleInput.focus();
 
                     return;
-
                 }
 
 
-                if (!resume && !selectedFile) {
+                if (
+                    !resume &&
+                    !selectedFile
+                ) {
 
                     event.preventDefault();
 
@@ -625,14 +1041,16 @@
                     );
 
                     return;
-
                 }
 
 
                 if (selectedFile) {
 
                     const fileError =
-                        validateFile(selectedFile);
+                        validateFile(
+                            selectedFile
+                        );
+
 
                     if (fileError) {
 
@@ -646,9 +1064,7 @@
                         );
 
                         return;
-
                     }
-
                 }
 
 
@@ -657,11 +1073,18 @@
                 );
 
                 analyzeBtn.disabled = true;
-
             }
         );
-
     }
+    const scoreProgress =
+    document.getElementById("scoreProgress");
+
+if (scoreProgress) {
+    const score =
+        Number(scoreProgress.dataset.score) || 0;
+
+    scoreProgress.style.width = `${score}%`;
+}
 
 </script>
 
