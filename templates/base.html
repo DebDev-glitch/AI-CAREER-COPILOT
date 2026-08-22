@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AI Career Guide</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container navbar-container">
+            <a href="/dashboard" class="brand">
+                <span class="brand-icon">✦</span>
+                <span>AI Career Guide</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="/dashboard" class="nav-link">
+                    Dashboard
+                </a>
+
+                <a href="/history" class="nav-link">
+                    History
+                </a>
+
+                <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    🌙
+                </button>
+
+                <a href="/logout" class="nav-link logout-link">
+                    Logout
+                </a>
+
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 AI Career Guide · Powered by AI</p>
+        </div>
+    </footer>
+    <script>
+
+        const themeToggle = document.getElementById("themeToggle");
+
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark-mode");
+
+            if (themeToggle) {
+                themeToggle.textContent = "☀️";
+            }
+        }
+
+
+        if (themeToggle) {
+
+            themeToggle.addEventListener("click", function () {
+
+                document.body.classList.toggle("dark-mode");
+
+                const isDark =
+                    document.body.classList.contains("dark-mode");
+
+                localStorage.setItem(
+                    "theme",
+                    isDark ? "dark" : "light"
+                );
+
+                themeToggle.textContent =
+                    isDark ? "☀️" : "🌙";
+
+            });
+
+        }
+
+    </script>
+</body>
+
+</html>

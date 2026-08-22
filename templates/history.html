@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="history-page">
+
+    <!-- Header -->
+    <div class="history-header">
+
+        <div>
+            <span class="section-label">Career Reports</span>
+
+            <h2>Your Analysis History</h2>
+
+            <p>
+                Review your previous resume analyses and career roadmaps.
+            </p>
+        </div>
+
+        <a href="/dashboard" class="new-analysis-btn">
+            ✨ New Analysis
+        </a>
+
+    </div>
+
+
+    {% if reports %}
+
+        <div class="history-list">
+
+            {% for r in reports %}
+
+            <article class="history-card">
+
+                <!-- Report header -->
+                <div class="history-card-header">
+
+                    <div class="history-title">
+
+                        <div class="history-icon">
+                            📄
+                        </div>
+
+                        <div>
+                            <h3>Resume Analysis #{{ loop.index }}</h3>
+                            <span class="history-status">
+                                AI Career Report
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <span class="report-number">
+                        #{{ loop.index }}
+                    </span>
+
+                </div>
+
+
+                <!-- Resume preview -->
+                <div class="resume-preview">
+
+                    <div class="history-section-title">
+                        <span>📋</span>
+                        Resume Preview
+                    </div>
+
+                    <p>
+                        {{ r.resume[:250] }}
+                        {% if r.resume|length > 250 %}...{% endif %}
+                    </p>
+
+                </div>
+
+
+                <!-- Skills -->
+                <div class="history-result-section">
+
+                    <div class="history-result-heading">
+                        <span class="result-mini-icon skills-mini">
+                            🧠
+                        </span>
+
+                        <div>
+                            <h4>Your Skills</h4>
+                            <span>
+                                Skills identified from your resume
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="history-tags">
+
+                        {% for s in r.result.get("skills", []) %}
+
+                        <span class="history-tag">
+                            {{ s }}
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Missing skills -->
+                <div class="history-result-section">
+
+                    <div class="history-result-heading">
+                        <span class="result-mini-icon missing-mini">
+                            🎯
+                        </span>
+
+                        <div>
+                            <h4>Missing Skills</h4>
+                            <span>
+                                Skills to improve for your career goal
+                            </span>
+                        </div>
+                    </div>
+
+                    <ul class="history-list-items">
+
+                        {% for s in r.result.get("missing_skills", []) %}
+
+                        <li>
+                            <span class="history-bullet"></span>
+                            {{ s }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Roadmap -->
+                <div class="history-result-section">
+
+                    <div class="history-result-heading">
+                        <span class="result-mini-icon roadmap-mini">
+                            🗺️
+                        </span>
+
+                        <div>
+                            <h4>Career Roadmap</h4>
+                            <span>
+                                Recommended learning path
+                            </span>
+                        </div>
+                    </div>
+
+                    <ol class="history-roadmap">
+
+                        {% for s in r.result.get("roadmap", []) %}
+
+                        <li>
+
+                            <span class="history-step">
+                                {{ loop.index }}
+                            </span>
+
+                            <span>
+                                {{ s }}
+                            </span>
+
+                        </li>
+
+                        {% endfor %}
+
+                    </ol>
+
+                </div>
+
+
+                <!-- Interview -->
+                <div class="history-result-section">
+
+                    <div class="history-result-heading">
+                        <span class="result-mini-icon interview-mini">
+                            🎤
+                        </span>
+
+                        <div>
+                            <h4>Interview Questions</h4>
+                            <span>
+                                Questions to prepare for
+                            </span>
+                        </div>
+                    </div>
+
+                    <ol class="history-interview">
+
+                        {% for s in r.result.get("interview_questions", []) %}
+
+                        <li>
+                            {{ s }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ol>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- Empty state -->
+        <div class="empty-history">
+
+            <div class="empty-history-icon">
+                📊
+            </div>
+
+            <h3>No analyses yet</h3>
+
+            <p>
+                Your completed resume analyses will appear here.
+            </p>
+
+            <a href="/dashboard" class="new-analysis-btn">
+                ✨ Analyze My Resume
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
