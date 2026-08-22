@@ -2764,3 +2764,7 @@ body.dark-mode .password-field .show-password:hover {
     color: #c7d2fe;
 }
 
+.file-error {
+    color: #d64545;
+    font-weight: 600;
+}

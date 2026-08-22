@@ -25,7 +25,9 @@
         <div class="section-heading">
             <div>
                 <span class="section-label">Resume Analyzer</span>
+
                 <h3>Discover your career potential</h3>
+
                 <p>
                     Paste your resume or upload a PDF/DOCX and tell us
                     what role you're targeting.
@@ -38,7 +40,9 @@
         </div>
 
 
-        <form method="post" enctype="multipart/form-data" id="resumeForm">
+        <form method="post"
+              enctype="multipart/form-data"
+              id="resumeForm">
 
             <!-- Target role -->
             <div class="form-group">
@@ -51,8 +55,14 @@
 
                     <span class="role-icon">🎯</span>
 
-                    <input type="text" id="role" name="role" placeholder="e.g. Python Backend Developer"
-                        autocomplete="off" required>
+                    <input
+                        type="text"
+                        id="role"
+                        name="role"
+                        placeholder="e.g. Python Backend Developer"
+                        autocomplete="off"
+                        required
+                    >
 
                 </div>
 
@@ -90,7 +100,11 @@
                     Paste Resume
                 </label>
 
-                <textarea id="resume" name="resume" placeholder="Paste your resume content here..."></textarea>
+                <textarea
+                    id="resume"
+                    name="resume"
+                    placeholder="Paste your resume content here..."
+                ></textarea>
 
             </div>
 
@@ -102,23 +116,41 @@
                     Upload Resume
                 </label>
 
-                <label for="file" class="resume-dropzone" id="dropzone">
+                <label
+                    for="file"
+                    class="resume-dropzone"
+                    id="dropzone"
+                >
 
                     <div class="dropzone-icon">
                         📄
                     </div>
 
                     <div class="dropzone-content">
-                        <strong>Drop your resume here</strong>
 
-                        <span>or click to browse from your computer</span>
+                        <strong>
+                            Drop your resume here
+                        </strong>
 
-                        <small>Supported formats: PDF, DOCX</small>
+                        <span>
+                            or click to browse from your computer
+                        </span>
+
+                        <small>
+                            Supported formats: PDF, DOCX • Max size: 5 MB
+                        </small>
+
                     </div>
 
                 </label>
 
-                <input type="file" id="file" name="file" accept=".pdf,.docx" hidden>
+                <input
+                    type="file"
+                    id="file"
+                    name="file"
+                    accept=".pdf,.docx"
+                    hidden
+                >
 
                 <p id="fileName" class="file-name">
                     No file selected
@@ -128,7 +160,11 @@
 
 
             <!-- Button -->
-            <button type="submit" class="analyze-btn" id="analyzeBtn">
+            <button
+                type="submit"
+                class="analyze-btn"
+                id="analyzeBtn"
+            >
 
                 <span class="button-text">
                     ✨ Analyze My Resume
@@ -140,77 +176,161 @@
 
             </button>
 
-</form>
+        </form>
 
-</section>
+    </section>
 
 
-<!-- Results -->
-{% if result %}
+    <!-- Results -->
+    {% if result %}
 
-<section class="results-section">
+    <section class="results-section">
 
-    <div class="results-header">
+        <div class="results-header">
 
-        <div>
-            <span class="section-label">
-                AI Results
-            </span>
+            <div>
+                <span class="section-label">
+                    AI Results
+                </span>
 
-            <h3>
-                Your Career Analysis
-            </h3>
+                <h3>
+                    Your Career Analysis
+                </h3>
 
-            <p>
-                Here’s what Gemini found from your resume.
-            </p>
+                <p>
+                    Here’s what Gemini found from your resume.
+                </p>
+            </div>
+
         </div>
 
-    </div>
 
+        {% if result.error %}
 
-    {% if result.error %}
+        <div class="error-card">
 
-    <div class="error-card">
-        <span>⚠️</span>
+            <span>⚠️</span>
 
-        <div>
-            <strong>Analysis Error</strong>
-            <p>{{ result.error }}</p>
+            <div>
+                <strong>Something went wrong</strong>
+
+                <p>
+                    {{ result.error }}
+                </p>
+            </div>
+
         </div>
-    </div>
 
-    {% else %}
-
-
-    <!-- TOP RESULT CARDS -->
-    <div class="results-grid">
+        {% else %}
 
 
-        <!-- Skills -->
-        <div class="result-card">
+        <!-- TOP RESULT CARDS -->
+        <div class="results-grid">
 
-            <div class="result-card-header">
 
-                <div class="result-icon skills-icon">
-                    🧠
+            <!-- Skills -->
+            <div class="result-card">
+
+                <div class="result-card-header">
+
+                    <div class="result-icon skills-icon">
+                        🧠
+                    </div>
+
+                    <div>
+                        <h4>Your Skills</h4>
+                        <p>Skills found in your resume</p>
+                    </div>
+
                 </div>
 
-                <div>
-                    <h4>Your Skills</h4>
-                    <p>Skills found in your resume</p>
+
+                <div class="skill-tags">
+
+                    {% for s in result.get("skills", []) %}
+
+                    <span class="skill-tag">
+                        {{ s }}
+                    </span>
+
+                    {% endfor %}
+
                 </div>
 
             </div>
 
 
-            <div class="skill-tags">
+            <!-- Missing Skills -->
+            <div class="result-card">
 
-                {% for s in result.get("skills", []) %}
+                <div class="result-card-header">
 
-                <span class="skill-tag">
-                    {{ s }}
-                </span>
+                    <div class="result-icon missing-icon">
+                        🎯
+                    </div>
+
+                    <div>
+                        <h4>Missing Skills</h4>
+                        <p>Skills to improve for your goal</p>
+                    </div>
+
+                </div>
+
+
+                <ul class="clean-result-list">
+
+                    {% for s in result.get("missing_skills", []) %}
+
+                    <li>
+                        <span class="list-dot missing-dot"></span>
+                        {{ s }}
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROADMAP -->
+        <div class="result-card roadmap-card">
+
+            <div class="result-card-header">
+
+                <div class="result-icon roadmap-icon">
+                    🗺️
+                </div>
+
+                <div>
+                    <h4>Career Roadmap</h4>
+                    <p>
+                        Recommended steps to reach your target role
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="roadmap-items">
+
+                {% for s in result.get("roadmap", []) %}
+
+                <div class="roadmap-item">
+
+                    <div class="roadmap-number">
+                        {{ loop.index }}
+                    </div>
+
+                    <div class="roadmap-line"></div>
+
+                    <div class="roadmap-content">
+                        {{ s }}
+                    </div>
+
+                </div>
 
                 {% endfor %}
 
@@ -219,128 +339,53 @@
         </div>
 
 
-        <!-- Missing Skills -->
-        <div class="result-card">
+        <!-- INTERVIEW QUESTIONS -->
+        <div class="result-card interview-card">
 
             <div class="result-card-header">
 
-                <div class="result-icon missing-icon">
-                    🎯
+                <div class="result-icon interview-icon">
+                    🎤
                 </div>
 
                 <div>
-                    <h4>Missing Skills</h4>
-                    <p>Skills to improve for your goal</p>
+                    <h4>Interview Questions</h4>
+                    <p>
+                        Questions you should prepare for
+                    </p>
                 </div>
 
             </div>
 
 
-            <ul class="clean-result-list">
+            <div class="interview-items">
 
-                {% for s in result.get("missing_skills", []) %}
+                {% for s in result.get("interview_questions", []) %}
 
-                <li>
-                    <span class="list-dot missing-dot"></span>
-                    {{ s }}
-                </li>
+                <div class="interview-item">
+
+                    <span class="question-number">
+                        {{ loop.index }}
+                    </span>
+
+                    <span class="question-text">
+                        {{ s }}
+                    </span>
+
+                </div>
 
                 {% endfor %}
 
-            </ul>
-
-        </div>
-
-    </div>
-
-
-    <!-- ROADMAP -->
-    <div class="result-card roadmap-card">
-
-        <div class="result-card-header">
-
-            <div class="result-icon roadmap-icon">
-                🗺️
-            </div>
-
-            <div>
-                <h4>Career Roadmap</h4>
-                <p>Recommended steps to reach your target role</p>
             </div>
 
         </div>
 
 
-        <div class="roadmap-items">
+        {% endif %}
 
-            {% for s in result.get("roadmap", []) %}
-
-            <div class="roadmap-item">
-
-                <div class="roadmap-number">
-                    {{ loop.index }}
-                </div>
-
-                <div class="roadmap-line"></div>
-
-                <div class="roadmap-content">
-                    {{ s }}
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-    </div>
-
-
-    <!-- INTERVIEW QUESTIONS -->
-    <div class="result-card interview-card">
-
-        <div class="result-card-header">
-
-            <div class="result-icon interview-icon">
-                🎤
-            </div>
-
-            <div>
-                <h4>Interview Questions</h4>
-                <p>Questions you should prepare for</p>
-            </div>
-
-        </div>
-
-
-        <div class="interview-items">
-
-            {% for s in result.get("interview_questions", []) %}
-
-            <div class="interview-item">
-
-                <span class="question-number">
-                    {{ loop.index }}
-                </span>
-
-                <span class="question-text">
-                    {{ s }}
-                </span>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-    </div>
-
+    </section>
 
     {% endif %}
-
-</section>
-
-{% endif %}
 
 </div>
 
@@ -351,6 +396,83 @@
     const fileName = document.getElementById("fileName");
     const dropzone = document.getElementById("dropzone");
 
+    const resumeForm = document.getElementById("resumeForm");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+
+    const roleInput = document.getElementById("role");
+    const resumeInput = document.getElementById("resume");
+
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+    const ALLOWED_EXTENSIONS = [
+        ".pdf",
+        ".docx"
+    ];
+
+
+    function validateFile(file) {
+
+        if (!file) {
+            return "Please select a resume file.";
+        }
+
+        const fileName = file.name.toLowerCase();
+
+        const extension =
+            fileName.substring(
+                fileName.lastIndexOf(".")
+            );
+
+        if (!ALLOWED_EXTENSIONS.includes(extension)) {
+            return "Unsupported file type. Please upload a PDF or DOCX file.";
+        }
+
+        if (file.size === 0) {
+            return "The selected file is empty. Please choose another file.";
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+            return "File is too large. Please upload a file smaller than 5 MB.";
+        }
+
+        return null;
+    }
+
+
+    function showFileName(file) {
+
+        if (!file) {
+            fileName.textContent = "No file selected";
+            return;
+        }
+
+        fileName.textContent =
+            "Selected: " + file.name;
+    }
+
+
+    function handleFile(file) {
+
+        const error = validateFile(file);
+
+        if (error) {
+
+            fileInput.value = "";
+
+            fileName.textContent =
+                error;
+
+            fileName.classList.add("file-error");
+
+            return false;
+        }
+
+        fileName.classList.remove("file-error");
+
+        showFileName(file);
+
+        return true;
+    }
 
 
     if (fileInput && dropzone) {
@@ -358,74 +480,186 @@
         fileInput.addEventListener("change", function () {
 
             if (fileInput.files.length > 0) {
-                fileName.textContent =
-                    "Selected: " + fileInput.files[0].name;
+
+                handleFile(
+                    fileInput.files[0]
+                );
+
             } else {
-                fileName.textContent =
-                    "No file selected";
+
+                showFileName(null);
+
             }
 
         });
 
-        dropzone.addEventListener("dragover", function (event) {
 
-            event.preventDefault();
-            dropzone.classList.add("drag-over");
+        dropzone.addEventListener(
+            "dragover",
+            function (event) {
 
-        });
+                event.preventDefault();
 
-        dropzone.addEventListener("dragleave", function () {
+                dropzone.classList.add(
+                    "drag-over"
+                );
 
-            dropzone.classList.remove("drag-over");
-
-        });
-
-        dropzone.addEventListener("drop", function (event) {
-
-            event.preventDefault();
-            dropzone.classList.remove("drag-over");
-
-            const files = event.dataTransfer.files;
-
-            if (files.length > 0) {
-
-                fileInput.files = files;
-
-                fileName.textContent =
-                    "Selected: " + files[0].name;
             }
+        );
+
+
+        dropzone.addEventListener(
+            "dragleave",
+            function () {
+
+                dropzone.classList.remove(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        dropzone.addEventListener(
+            "drop",
+            function (event) {
+
+                event.preventDefault();
+
+                dropzone.classList.remove(
+                    "drag-over"
+                );
+
+                const files =
+                    event.dataTransfer.files;
+
+                if (files.length > 0) {
+
+                    const file = files[0];
+
+                    if (handleFile(file)) {
+
+                        const dataTransfer =
+                            new DataTransfer();
+
+                        dataTransfer.items.add(file);
+
+                        fileInput.files =
+                            dataTransfer.files;
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (roleInput) {
+
+        const roleChips =
+            document.querySelectorAll(
+                ".role-chip"
+            );
+
+        roleChips.forEach(function (chip) {
+
+            chip.addEventListener(
+                "click",
+                function () {
+
+                    roleInput.value =
+                        chip.textContent.trim();
+
+                    roleInput.focus();
+
+                }
+            );
 
         });
 
     }
 
 
-    const roleInput = document.getElementById("role");
-    const roleChips = document.querySelectorAll(".role-chip");
-
-    roleChips.forEach(function (chip) {
-
-        chip.addEventListener("click", function () {
-
-            roleInput.value = chip.textContent.trim();
-            roleInput.focus();
-
-        });
-
-    });
-
-
-    const resumeForm = document.getElementById("resumeForm");
-    const analyzeBtn = document.getElementById("analyzeBtn");
-
     if (resumeForm && analyzeBtn) {
 
-        resumeForm.addEventListener("submit", function () {
+        resumeForm.addEventListener(
+            "submit",
+            function (event) {
 
-            analyzeBtn.classList.add("loading");
-            analyzeBtn.disabled = true;
+                const role =
+                    roleInput.value.trim();
 
-        });
+                const resume =
+                    resumeInput.value.trim();
+
+                const selectedFile =
+                    fileInput.files.length > 0
+                        ? fileInput.files[0]
+                        : null;
+
+
+                if (!role) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter your target career role."
+                    );
+
+                    roleInput.focus();
+
+                    return;
+
+                }
+
+
+                if (!resume && !selectedFile) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please upload a resume or paste your resume text."
+                    );
+
+                    return;
+
+                }
+
+
+                if (selectedFile) {
+
+                    const fileError =
+                        validateFile(selectedFile);
+
+                    if (fileError) {
+
+                        event.preventDefault();
+
+                        fileName.textContent =
+                            fileError;
+
+                        fileName.classList.add(
+                            "file-error"
+                        );
+
+                        return;
+
+                    }
+
+                }
+
+
+                analyzeBtn.classList.add(
+                    "loading"
+                );
+
+                analyzeBtn.disabled = true;
+
+            }
+        );
 
     }
 
