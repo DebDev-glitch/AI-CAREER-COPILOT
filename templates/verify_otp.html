@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <div class="auth-card signup-card">
+
+        <div class="auth-icon">
+            🔐
+        </div>
+
+        <h2>Verify Your Email</h2>
+
+        <p class="sub-text">
+            Enter the 6-digit code sent to your email.
+        </p>
+
+        {% if error %}
+        <div class="form-error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if message %}
+        <div class="form-success">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="otp">Verification Code</label>
+
+            <input
+                type="text"
+                id="otp"
+                name="otp"
+                placeholder="Enter 6-digit OTP"
+                maxlength="6"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                required
+            >
+
+            <button type="submit">
+                Verify Email
+                <span class="button-arrow">→</span>
+            </button>
+
+        </form>
+
+        <div class="auth-divider">
+            <span>Didn't receive the code?</span>
+        </div>
+
+        <form method="POST" action="/resend-otp">
+
+            <button type="submit">
+                Resend OTP
+            </button>
+
+        </form>
+
+        <p class="switch-auth">
+            <a href="/signup">Back to Sign Up</a>
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+    const otpInput = document.getElementById("otp");
+
+    otpInput.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "");
+    });
+</script>
+
+{% endblock %}
