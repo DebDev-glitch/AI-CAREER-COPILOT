@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>AI Career Guide</title>
+    <title>AI Career Copilot</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
@@ -15,10 +15,12 @@
         <div class="container navbar-container">
             <a href="/dashboard" class="brand">
                 <span class="brand-icon">✦</span>
-                <span>AI Career Guide</span>
+                <span>AI Career Copilot</span>
             </a>
 
             <nav class="nav-links">
+
+                {% if session.get('user') %}
 
                 <a href="/dashboard" class="nav-link">
                     Dashboard
@@ -28,13 +30,15 @@
                     History
                 </a>
 
-                <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
-                    🌙
-                </button>
-
                 <a href="/logout" class="nav-link logout-link">
                     Logout
                 </a>
+
+                {% endif %}
+
+                <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    🌙
+                </button>
 
             </nav>
         </div>
