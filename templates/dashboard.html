@@ -6,16 +6,92 @@
 
     <!-- Hero -->
     <section class="dashboard-hero">
-        <div>
-            <span class="hero-badge">✦ AI Career Analysis</span>
 
-            <h2>Welcome Back 👋</h2>
+        <div class="dashboard-hero-content">
 
-            <p>
-                Analyze your resume, discover skill gaps,
-                and build a personalized roadmap for your career.
-            </p>
+            <div class="dashboard-hero-text">
+
+                <span class="hero-badge">
+                    ✦ AI-POWERED CAREER ASSISTANT
+                </span>
+
+                <h2>
+                    Welcome, {{ user }} 👋
+                </h2>
+
+                <p>
+                    Turn your resume into a clear career strategy.
+                    Discover your strengths, identify skill gaps,
+                    and build a personalized roadmap for your target role.
+                </p>
+
+            </div>
+
+            <div class="dashboard-hero-visual">
+
+                <div class="hero-orbit orbit-one"></div>
+                <div class="hero-orbit orbit-two"></div>
+
+                <div class="hero-ai-icon">
+                    ✦
+                </div>
+
+                <div class="hero-floating-card hero-card-one">
+                    <span>📄</span>
+                    <div>
+                        <strong>Resume</strong>
+                        <small>AI Analysis</small>
+                    </div>
+                </div>
+
+                <div class="hero-floating-card hero-card-two">
+                    <span>🎯</span>
+                    <div>
+                        <strong>Career Match</strong>
+                        <small>Skill Insights</small>
+                    </div>
+                </div>
+
+                <div class="hero-floating-card hero-card-three">
+                    <span>🗺️</span>
+                    <div>
+                        <strong>Career Roadmap</strong>
+                        <small>Personalized</small>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
+
+        <div class="dashboard-features">
+
+            <div class="dashboard-feature">
+                <span>🧠</span>
+                <div>
+                    <strong>AI Career Insights</strong>
+                    <small>Understand your current profile</small>
+                </div>
+            </div>
+
+            <div class="dashboard-feature">
+                <span>🎯</span>
+                <div>
+                    <strong>Skill Gap Analysis</strong>
+                    <small>Know what to learn next</small>
+                </div>
+            </div>
+
+            <div class="dashboard-feature">
+                <span>🚀</span>
+                <div>
+                    <strong>Career Roadmap</strong>
+                    <small>Build a path toward your goal</small>
+                </div>
+            </div>
+
+        </div>
+
     </section>
 
 
@@ -53,14 +129,8 @@
 
                     <span class="role-icon">🎯</span>
 
-                    <input
-                        type="text"
-                        id="role"
-                        name="role"
-                        placeholder="e.g. Python Backend Developer"
-                        autocomplete="off"
-                        required
-                    >
+                    <input type="text" id="role" name="role" placeholder="e.g. Python Backend Developer"
+                        autocomplete="off" required>
 
                 </div>
 
@@ -98,11 +168,7 @@
                     Paste Resume
                 </label>
 
-                <textarea
-                    id="resume"
-                    name="resume"
-                    placeholder="Paste your resume content here..."
-                ></textarea>
+                <textarea id="resume" name="resume" placeholder="Paste your resume content here..."></textarea>
 
             </div>
 
@@ -114,11 +180,7 @@
                     Upload Resume
                 </label>
 
-                <label
-                    for="file"
-                    class="resume-dropzone"
-                    id="dropzone"
-                >
+                <label for="file" class="resume-dropzone" id="dropzone">
 
                     <div class="dropzone-icon">
                         📄
@@ -142,13 +204,7 @@
 
                 </label>
 
-                <input
-                    type="file"
-                    id="file"
-                    name="file"
-                    accept=".pdf,.docx"
-                    hidden
-                >
+                <input type="file" id="file" name="file" accept=".pdf,.docx" hidden>
 
                 <p id="fileName" class="file-name">
                     No file selected
@@ -158,11 +214,7 @@
 
 
             <!-- Analyze -->
-            <button
-                type="submit"
-                class="analyze-btn"
-                id="analyzeBtn"
-            >
+            <button type="submit" class="analyze-btn" id="analyzeBtn">
 
                 <span class="button-text">
                     ✨ Analyze My Resume
@@ -249,8 +301,8 @@
 
                     <p>
                         {{ result.get(
-                            "career_summary",
-                            "No summary available."
+                        "career_summary",
+                        "No summary available."
                         ) }}
                     </p>
 
@@ -283,8 +335,8 @@
                     <div class="score-number">
 
                         {{ result.get(
-                            "job_readiness_score",
-                            0
+                        "job_readiness_score",
+                        0
                         ) }}
 
                         <span>/ 100</span>
@@ -293,19 +345,16 @@
 
                     <div class="score-bar">
 
-                        <div
-                            class="score-progress"
-                            id="scoreProgress"
-                            data-score="{{ result.get('job_readiness_score', 0) }}"
-                        ></div>
+                        <div class="score-progress" id="scoreProgress"
+                            data-score="{{ result.get('job_readiness_score', 0) }}"></div>
 
                     </div>
 
                     <p class="score-reason">
 
                         {{ result.get(
-                            "job_readiness_reason",
-                            "No explanation available."
+                        "job_readiness_reason",
+                        "No explanation available."
                         ) }}
 
                     </p>
@@ -347,15 +396,15 @@
 
                         <strong>
                             {{ skill.get(
-                                "name",
-                                "Unknown Skill"
+                            "name",
+                            "Unknown Skill"
                             ) }}
                         </strong>
 
                         <span class="skill-level">
                             {{ skill.get(
-                                "level",
-                                "Unknown"
+                            "level",
+                            "Unknown"
                             ) }}
                         </span>
 
@@ -363,8 +412,8 @@
 
                     <p>
                         {{ skill.get(
-                            "evidence",
-                            "No evidence provided."
+                        "evidence",
+                        "No evidence provided."
                         ) }}
                     </p>
 
@@ -406,8 +455,8 @@
             <div class="missing-skills-list">
 
                 {% for skill in result.get(
-                    "missing_skills",
-                    []
+                "missing_skills",
+                []
                 ) %}
 
                 <div class="missing-skill-item">
@@ -416,15 +465,15 @@
 
                         <strong>
                             {{ skill.get(
-                                "name",
-                                "Unknown Skill"
+                            "name",
+                            "Unknown Skill"
                             ) }}
                         </strong>
 
                         <span class="skill-priority">
                             {{ skill.get(
-                                "priority",
-                                "Medium"
+                            "priority",
+                            "Medium"
                             ) }}
                         </span>
 
@@ -432,8 +481,8 @@
 
                     <p>
                         {{ skill.get(
-                            "reason",
-                            "No reason provided."
+                        "reason",
+                        "No reason provided."
                         ) }}
                     </p>
 
@@ -475,16 +524,16 @@
             <div class="roadmap-items">
 
                 {% for item in result.get(
-                    "roadmap",
-                    []
+                "roadmap",
+                []
                 ) %}
 
                 <div class="roadmap-item">
 
                     <div class="roadmap-number">
                         {{ item.get(
-                            "step",
-                            loop.index
+                        "step",
+                        loop.index
                         ) }}
                     </div>
 
@@ -494,8 +543,8 @@
 
                         <h4>
                             {{ item.get(
-                                "topic",
-                                "Roadmap Step"
+                            "topic",
+                            "Roadmap Step"
                             ) }}
                         </h4>
 
@@ -503,8 +552,8 @@
                             <strong>Why:</strong>
 
                             {{ item.get(
-                                "reason",
-                                "No reason provided."
+                            "reason",
+                            "No reason provided."
                             ) }}
                         </p>
 
@@ -512,8 +561,8 @@
                             <strong>Practice:</strong>
 
                             {{ item.get(
-                                "practice",
-                                "No practice recommendation provided."
+                            "practice",
+                            "No practice recommendation provided."
                             ) }}
                         </p>
 
@@ -557,16 +606,16 @@
             <div class="project-recommendations">
 
                 {% for project in result.get(
-                    "recommended_projects",
-                    []
+                "recommended_projects",
+                []
                 ) %}
 
                 <div class="project-item">
 
                     <h4>
                         {{ project.get(
-                            "name",
-                            "Recommended Project"
+                        "name",
+                        "Recommended Project"
                         ) }}
                     </h4>
 
@@ -574,8 +623,8 @@
                         <strong>Purpose:</strong>
 
                         {{ project.get(
-                            "purpose",
-                            "No purpose provided."
+                        "purpose",
+                        "No purpose provided."
                         ) }}
                     </p>
 
@@ -583,8 +632,8 @@
                         <strong>What to build:</strong>
 
                         {{ project.get(
-                            "description",
-                            "No description provided."
+                        "description",
+                        "No description provided."
                         ) }}
                     </p>
 
@@ -594,8 +643,8 @@
                     <div class="skill-tags">
 
                         {% for skill in project.get(
-                            "skills",
-                            []
+                        "skills",
+                        []
                         ) %}
 
                         <span class="skill-tag">
@@ -646,8 +695,8 @@
             <div class="interview-items">
 
                 {% for item in result.get(
-                    "interview_questions",
-                    []
+                "interview_questions",
+                []
                 ) %}
 
                 <div class="interview-item">
@@ -660,8 +709,8 @@
 
                         <span class="question-text">
                             {{ item.get(
-                                "question",
-                                "Question unavailable."
+                            "question",
+                            "Question unavailable."
                             ) }}
                         </span>
 
@@ -669,15 +718,15 @@
 
                             <span>
                                 {{ item.get(
-                                    "category",
-                                    "Technical"
+                                "category",
+                                "Technical"
                                 ) }}
                             </span>
 
                             <span>
                                 {{ item.get(
-                                    "difficulty",
-                                    "Intermediate"
+                                "difficulty",
+                                "Intermediate"
                                 ) }}
                             </span>
 
@@ -723,8 +772,8 @@
             <ul class="clean-result-list">
 
                 {% for improvement in result.get(
-                    "resume_improvements",
-                    []
+                "resume_improvements",
+                []
                 ) %}
 
                 <li>
@@ -1077,14 +1126,14 @@
         );
     }
     const scoreProgress =
-    document.getElementById("scoreProgress");
+        document.getElementById("scoreProgress");
 
-if (scoreProgress) {
-    const score =
-        Number(scoreProgress.dataset.score) || 0;
+    if (scoreProgress) {
+        const score =
+            Number(scoreProgress.dataset.score) || 0;
 
-    scoreProgress.style.width = `${score}%`;
-}
+        scoreProgress.style.width = `${score}%`;
+    }
 
 </script>
 

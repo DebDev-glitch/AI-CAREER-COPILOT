@@ -1,0 +1,588 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="analysis-page">
+
+    <div class="analysis-topbar">
+
+        <a href="/dashboard" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+        <span class="analysis-badge">
+            ✦ AI CAREER ANALYSIS
+        </span>
+
+    </div>
+
+
+    <section class="analysis-header">
+
+        <div>
+
+            <span class="section-label">
+                Your Career Analysis
+            </span>
+
+            <h1>
+                Your Resume Results
+            </h1>
+
+            <p>
+                AI-powered insights based on your resume
+                and target career role.
+            </p>
+
+        </div>
+
+        <div class="analysis-role">
+
+            <span>Target Role</span>
+
+            <strong>
+                {{ result.get("target_role", "Career Analysis") }}
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    {% if result.error %}
+
+    <div class="error-card">
+
+        <span>⚠️</span>
+
+        <div>
+            <strong>Something went wrong</strong>
+
+            <p>
+                {{ result.error }}
+            </p>
+        </div>
+
+    </div>
+
+    {% else %}
+
+
+    <section class="analysis-overview">
+
+        <div class="overview-card score-card">
+
+            <span class="overview-label">
+                Job Readiness
+            </span>
+
+            <strong class="overview-score">
+                {{ result.get("job_readiness_score", 0) }}%
+            </strong>
+
+            <div class="overview-progress">
+                <div style="width: {{ result.get('job_readiness_score', 0) }}%;">
+                </div>
+            </div>
+
+
+            <p>
+                {{ result.get(
+                "job_readiness_reason",
+                "No explanation available."
+                ) }}
+            </p>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <span class="overview-icon">
+                🧠
+            </span>
+
+            <strong>
+                {{ result.get("skills", [])|length }}
+            </strong>
+
+            <span>
+                Skills Identified
+            </span>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <span class="overview-icon">
+                🎯
+            </span>
+
+            <strong>
+                {{ result.get("missing_skills", [])|length }}
+            </strong>
+
+            <span>
+                Skill Gaps
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon skills-icon">
+                🎯
+            </div>
+
+            <div>
+                <h2>Career Summary</h2>
+
+                <p>
+                    Your AI-generated career assessment
+                </p>
+            </div>
+
+        </div>
+
+        <div class="analysis-summary">
+
+            {{ result.get(
+            "career_summary",
+            "No summary available."
+            ) }}
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon skills-icon">
+                🧠
+            </div>
+
+            <div>
+                <h2>Your Skills</h2>
+
+                <p>
+                    Skills identified from your resume
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="analysis-skills">
+
+            {% for skill in result.get("skills", []) %}
+
+            <div class="analysis-skill">
+
+                <div>
+
+                    <strong>
+                        {{ skill.get(
+                        "name",
+                        "Unknown Skill"
+                        ) }}
+                    </strong>
+
+                    <p>
+                        {{ skill.get(
+                        "evidence",
+                        "No evidence provided."
+                        ) }}
+                    </p>
+
+                </div>
+
+                <span>
+                    {{ skill.get(
+                    "level",
+                    "Unknown"
+                    ) }}
+                </span>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No relevant skills were identified.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon missing-icon">
+                🎯
+            </div>
+
+            <div>
+                <h2>Missing Skills</h2>
+
+                <p>
+                    Skills that could improve your readiness
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="analysis-missing-skills">
+
+            {% for skill in result.get("missing_skills", []) %}
+
+            <div class="missing-analysis-item">
+
+                <div>
+
+                    <strong>
+                        {{ skill.get(
+                        "name",
+                        "Unknown Skill"
+                        ) }}
+                    </strong>
+
+                    <p>
+                        {{ skill.get(
+                        "reason",
+                        "No reason provided."
+                        ) }}
+                    </p>
+
+                </div>
+
+                <span>
+                    {{ skill.get(
+                    "priority",
+                    "Medium"
+                    ) }}
+                </span>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No major missing skills were identified.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon roadmap-icon">
+                🗺️
+            </div>
+
+            <div>
+                <h2>Career Roadmap</h2>
+
+                <p>
+                    Your recommended path toward your target role
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="analysis-roadmap">
+
+            {% for item in result.get("roadmap", []) %}
+
+            <div class="analysis-roadmap-item">
+
+                <div class="roadmap-number">
+                    {{ item.get("step", loop.index) }}
+                </div>
+
+                <div class="roadmap-content">
+
+                    <h3>
+                        {{ item.get(
+                        "topic",
+                        "Roadmap Step"
+                        ) }}
+                    </h3>
+
+                    <p>
+                        <strong>Why:</strong>
+                        {{ item.get(
+                        "reason",
+                        "No reason provided."
+                        ) }}
+                    </p>
+
+                    <p>
+                        <strong>Practice:</strong>
+                        {{ item.get(
+                        "practice",
+                        "No practice recommendation provided."
+                        ) }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No roadmap was generated.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon roadmap-icon">
+                🚀
+            </div>
+
+            <div>
+                <h2>Recommended Projects</h2>
+
+                <p>
+                    Projects designed to close your skill gaps
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="analysis-projects">
+
+            {% for project in result.get(
+            "recommended_projects",
+            []
+            ) %}
+
+            <div class="analysis-project">
+
+                <h3>
+                    {{ project.get(
+                    "name",
+                    "Recommended Project"
+                    ) }}
+                </h3>
+
+                <p>
+                    <strong>Purpose:</strong>
+                    {{ project.get(
+                    "purpose",
+                    "No purpose provided."
+                    ) }}
+                </p>
+
+                <p>
+                    <strong>What to build:</strong>
+                    {{ project.get(
+                    "description",
+                    "No description provided."
+                    ) }}
+                </p>
+
+                {% if project.get("skills") %}
+
+                <div class="skill-tags">
+
+                    {% for skill in project.get(
+                    "skills",
+                    []
+                    ) %}
+
+                    <span class="skill-tag">
+                        {{ skill }}
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No project recommendations were generated.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon interview-icon">
+                🎤
+            </div>
+
+            <div>
+                <h2>Interview Preparation</h2>
+
+                <p>
+                    Questions you should prepare for
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="analysis-interview">
+
+            {% for item in result.get(
+            "interview_questions",
+            []
+            ) %}
+
+            <div class="analysis-question">
+
+                <span>
+                    {{ loop.index }}
+                </span>
+
+                <div>
+
+                    <strong>
+                        {{ item.get(
+                        "question",
+                        "Question unavailable."
+                        ) }}
+                    </strong>
+
+                    <div class="question-meta">
+
+                        <small>
+                            {{ item.get(
+                            "category",
+                            "Technical"
+                            ) }}
+                        </small>
+
+                        <small>
+                            {{ item.get(
+                            "difficulty",
+                            "Intermediate"
+                            ) }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No interview questions were generated.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="analysis-card">
+
+        <div class="analysis-card-header">
+
+            <div class="result-icon skills-icon">
+                📝
+            </div>
+
+            <div>
+                <h2>Resume Improvements</h2>
+
+                <p>
+                    Suggestions to make your resume stronger
+                </p>
+            </div>
+
+        </div>
+
+
+        <ul class="analysis-improvements">
+
+            {% for improvement in result.get(
+            "resume_improvements",
+            []
+            ) %}
+
+            <li>
+                <span>✓</span>
+                {{ improvement }}
+            </li>
+
+            {% else %}
+
+            <li>
+                No specific improvements were identified.
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </section>
+
+
+    <div class="analysis-actions">
+
+        <a href="/dashboard" class="secondary-action">
+            ← Analyze Another Resume
+        </a>
+
+        <a href="/history" class="primary-action">
+            View Analysis History →
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -512,6 +512,7 @@ def login():
             if password_valid:
 
                 session["user"] = user.email
+                session["username"] = user.username
 
                 return redirect("/dashboard")
 
@@ -1135,6 +1136,8 @@ def dashboard():
                     user_goal
                 )
 
+                result["target_role"] = user_goal   
+
                 db = SessionLocal()
 
                 try:
@@ -1161,8 +1164,9 @@ def dashboard():
                     )
 
                     db.add(report)
-
                     db.commit()
+
+                    return redirect(f"/analysis/{report.id}")
 
                 finally:
 
@@ -1176,9 +1180,59 @@ def dashboard():
 
     return render_template(
         "dashboard.html",
-        user=session["user"],
+        user=session["username"],
         result=result
     )
+
+
+# ANALYSIS
+
+@app.route("/analysis/<int:report_id>")
+def analysis(report_id):
+
+    if "user" not in session:
+        return redirect("/login")
+
+    db = SessionLocal()
+
+    try:
+
+        user = db.query(
+            models.User
+        ).filter_by(
+            email=session["user"]
+        ).first()
+
+        if not user:
+            session.pop("user", None)
+            session.pop("username", None)
+
+            return redirect("/login")
+
+        report = db.query(
+            models.Report
+        ).filter_by(
+            id=report_id,
+            user_id=user.id
+        ).first()
+
+        if not report:
+            return redirect("/history")
+
+        try:
+            result = json.loads(report.result)
+        except (json.JSONDecodeError, TypeError):
+            result = {}
+
+        return render_template(
+            "analysis.html",
+            result=result,
+            report=report,
+            username=session.get("username")
+        )
+
+    finally:
+        db.close()
 
 
 
@@ -1254,10 +1308,8 @@ def history():
 @app.route("/logout")
 def logout():
 
-    session.pop(
-        "user",
-        None
-    )
+    session.pop("user", None)
+    session.pop("username", None)
 
     return redirect("/login")
 
