@@ -3538,15 +3538,22 @@ body.dark-mode .upload-title {
     gap: 12px;
 }
 
-.analysis-skill {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 18px;
-    border: 1px solid #e7e8f0;
-    border-radius: 15px;
-    background: #fafaff;
+/* Skill cards */
+.analysis-skill{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:18px;
+    border:1px solid #e7e8f0;
+    border-radius:15px;
+    background:#fafaff;
+    transition:.2s ease;
+}
+
+.analysis-skill:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(34,30,70,.08);
 }
 
 .analysis-skill strong {
@@ -3580,15 +3587,22 @@ body.dark-mode .upload-title {
     gap: 12px;
 }
 
-.missing-analysis-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 18px;
-    border-left: 4px solid #8a63f5;
-    border-radius: 12px;
-    background: #faf9ff;
+/* Missing skill cards */
+.missing-analysis-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:18px;
+    border-left:4px solid #8a63f5;
+    border-radius:12px;
+    background:#faf9ff;
+    transition:.2s ease;
+}
+
+.missing-analysis-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(34,30,70,.08);
 }
 
 .missing-analysis-item strong {
@@ -3948,4 +3962,131 @@ body.dark-mode .analysis-question > span {
         width: 100%;
     }
 
+}
+.overview-progress-bar {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #6c4df6, #9b6cff);
+    transition: width 0.6s ease;
+}
+/* Analysis overview */
+
+.analysis-overview {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 34px;
+}
+
+.overview-card {
+    min-height: 260px;
+    padding: 28px;
+    border-radius: 22px;
+}
+
+.overview-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.overview-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.overview-number {
+    display: block;
+    font-size: 48px;
+    line-height: 1;
+}
+
+.overview-score {
+    display: block;
+    margin-top: 8px;
+    font-size: 52px;
+    line-height: 1;
+}
+
+.overview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    font-size: 21px;
+}
+
+.overview-progress {
+    width: 100%;
+    height: 9px;
+    margin-top: 24px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.overview-progress-bar {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #6c4df6, #9b6cff);
+    transition: width 0.6s ease;
+}
+
+.overview-reason {
+    margin-top: 20px;
+    line-height: 1.65;
+    font-size: 14px;
+}
+
+.overview-description {
+    margin: 16px 0 20px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.overview-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.overview-tags span {
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .analysis-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .overview-card {
+        min-height: auto;
+    }
+}
+
+/* Career Summary */
+.summary-card{
+    border-left:4px solid #6948ed;
+}
+
+.summary-icon{
+    background:#f0edff;
+}
+/* Accent on all analysis cards */
+.analysis-card{
+    border-left:4px solid #6948ed;
 }

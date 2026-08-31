@@ -1266,9 +1266,11 @@ def history():
             return redirect("/login")
 
         reports = db.query(
-            models.Report
+        models.Report
         ).filter_by(
-            user_id=user.id
+        user_id=user.id
+        ).order_by(
+        models.Report.id.desc()
         ).all()
 
         parsed_reports = []
@@ -1289,6 +1291,7 @@ def history():
                 parsed_result = {}
 
             parsed_reports.append({
+                "id": report.id,
                 "resume": report.resume_text,
                 "result": parsed_result
             })
@@ -1321,7 +1324,7 @@ def logout():
 if __name__ == "__main__":
 
     app.run(
-        host="0.0.0.0",
-        port=5000,
-        debug=True
-    )
+    host="0.0.0.0",
+    port=5000,
+    debug=False
+    )       
